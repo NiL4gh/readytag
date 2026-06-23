@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReadyTag — AI Metadata for Stock Contributors</title>
+<meta name="description" content="Generate SEO-ready titles and keywords for Adobe Stock, Shutterstock, Freepik, and Vecteezy in one click. Free with Groq. No subscription required.">
+<link rel="icon" type="image/png" href="assets/icon128.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0a0c14;
+  --surface: #111422;
+  --raised:  #181b2c;
+  --accent:  #7289ff;
+  --accent-h:#5c73f5;
+  --text:    #e8eaf6;
+  --text2:   #c8cde8;
+  --muted:   #6b7194;
+  --border:  #1e2140;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Navbar ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 60px;
+}
+.nav-logo {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--text);
+}
+.nav-logo span { color: var(--accent); }
+.nav-cta {
+  display: inline-block;
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background .15s, color .15s;
+}
+.nav-cta:hover { background: var(--accent); color: #fff; }
+
+/* ── Hero ── */
+.hero {
+  text-align: center;
+  padding: 96px 24px 80px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+.hero h1 {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: -.04em;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+.hero h1 span { color: var(--accent); }
+.hero p {
+  font-size: 20px;
+  color: var(--muted);
+  margin-bottom: 36px;
+  line-height: 1.5;
+}
+.hero-cta {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 14px 36px;
+  box-shadow: 0 4px 24px rgba(114,137,255,.35);
+  transition: background .15s, transform .1s;
+}
+.hero-cta:hover { background: var(--accent-h); transform: translateY(-1px); }
+.platform-badges {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.plat-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+}
+
+/* ── Demo ── */
+.demo-section {
+  max-width: 960px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+  text-align: center;
+}
+.demo-img-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 40px rgba(114,137,255,.15);
+}
+.demo-img-wrap img { width: 100%; display: block; }
+.demo-placeholder {
+  background: var(--surface);
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.demo-placeholder .icon { font-size: 40px; }
+.demo-caption {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 12px;
+}
+
+/* ── Section layout ── */
+.section {
+  max-width: 1080px;
+  margin: 0 auto 96px;
+  padding: 0 24px;
+}
+.section-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: var(--text);
+  margin-bottom: 48px;
+}
+
+/* ── Features Grid ── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.feat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  transition: border-color .2s;
+}
+.feat-card:hover { border-color: rgba(114,137,255,.4); }
+.feat-icon { font-size: 28px; margin-bottom: 12px; }
+.feat-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.feat-desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+/* ── How It Works ── */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.step {
+  text-align: center;
+  padding: 32px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  position: relative;
+}
+.step-num {
+  width: 40px;
+  height: 40px;
+  background: rgba(114,137,255,.12);
+  border: 1.5px solid rgba(114,137,255,.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--accent);
+  margin: 0 auto 16px;
+}
+.step-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.step-desc { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+/* ── Providers ── */
+.providers-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.prov-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.prov-badge {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ── FAQ ── */
+.faq-list { display: flex; flex-direction: column; gap: 8px; }
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s;
+}
+.faq-q:hover { background: var(--raised); }
+.faq-icon {
+  font-size: 20px;
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: transform .2s;
+  font-style: normal;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease, padding .3s;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.6;
+  padding: 0 20px;
+}
+.faq-item.open .faq-a {
+  max-height: 200px;
+  padding: 0 20px 16px;
+}
+
+/* ── Footer ── */
+footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 28px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-copy { font-size: 13px; color: var(--muted); }
+.footer-links { display: flex; align-items: center; gap: 20px; }
+.footer-links a {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+  transition: color .15s;
+}
+.footer-links a:hover { color: var(--accent); }
+.footer-cta {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 9px 22px;
+  transition: background .15s;
+}
+.footer-cta:hover { background: var(--accent-h); }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .nav { padding: 0 20px; }
+  .nav-cta { display: none; }
+  .hero h1 { font-size: 36px; }
+  .hero p { font-size: 16px; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: 1fr; }
+  .section-title { font-size: 28px; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="nav">
+  <div class="nav-logo">Ready<span>Tag</span></div>
+  <a class="nav-cta" href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank">Add to Chrome</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>AI Metadata for<br><span>Stock Photos</span> — In One Click</h1>
+  <p>Generate SEO-ready titles and keywords directly in Adobe Stock, Shutterstock, Freepik, and Vecteezy. Free with Groq. No subscription required.</p>
+  <a class="hero-cta" href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank">Add to Chrome — It's Free</a>
+  <div class="platform-badges">
+    <span class="plat-badge">Adobe Stock</span>
+    <span class="plat-badge">Shutterstock</span>
+    <span class="plat-badge">Freepik</span>
+    <span class="plat-badge">Vecteezy</span>
+  </div>
+</section>
+
+<!-- Demo Screenshot -->
+<div class="demo-section">
+  <div class="demo-img-wrap">
+    <!-- Drop docs/assets/demo.png (or demo.gif) here to replace this placeholder -->
+    <div class="demo-placeholder">
+      <span class="icon">🖼️</span>
+      <span>Drop <code>docs/assets/demo.png</code> to show the extension in action</span>
+    </div>
+    <!-- Uncomment once you have the screenshot:
+    <img src="assets/demo.png" alt="ReadyTag panel open on Adobe Stock Contributor Portal">
+    -->
+  </div>
+  <div class="demo-caption">ReadyTag's panel open on Adobe Stock Contributor Portal</div>
+</div>
+
+<!-- Features -->
+<div class="section">
+  <div class="section-tag">Features</div>
+  <div class="section-title">Everything you need to tag faster</div>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon">✦</div>
+      <div class="feat-title">AI-Powered Metadata</div>
+      <div class="feat-desc">Generates on-brand titles and keyword sets using the latest LLMs — tuned for stock marketplace SEO.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🖼</div>
+      <div class="feat-title">4 Platforms</div>
+      <div class="feat-desc">Works natively on Adobe Stock, Shutterstock, Freepik, and Vecteezy contributor portals.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔑</div>
+      <div class="feat-title">Free with Groq</div>
+      <div class="feat-desc">Bring your own Groq API key — it's free, no credit card needed. No ReadyTag subscription required.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">👁</div>
+      <div class="feat-title">Vision AI</div>
+      <div class="feat-desc">Analyzes your image visually when text context isn't enough. Supports Groq, OpenAI, Anthropic, and Gemini.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">📋</div>
+      <div class="feat-title">CSV Batch Export</div>
+      <div class="feat-desc">Export metadata for entire upload batches before submitting. No portal required.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon">🔒</div>
+      <div class="feat-title">Privacy-First</div>
+      <div class="feat-desc">Your API key never leaves your browser. Stored only in Chrome's local extension storage.</div>
+    </div>
+  </div>
+</div>
+
+<!-- How It Works -->
+<div class="section">
+  <div class="section-tag">How It Works</div>
+  <div class="section-title">Up and running in 3 steps</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Install</div>
+      <div class="step-desc">Add ReadyTag from the Chrome Web Store — one click, no sign-up.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Connect</div>
+      <div class="step-desc">Enter your free Groq API key (or any of 10 supported providers) in the extension popup.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Generate</div>
+      <div class="step-desc">Open your contributor portal and click "Generate" on any asset. Done.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Providers -->
+<div class="section">
+  <div class="section-tag">Providers</div>
+  <div class="section-title">10 AI providers supported</div>
+  <div class="providers-row">
+    <div class="prov-pill">Groq <span class="prov-badge">FREE</span></div>
+    <div class="prov-pill">Google Gemini <span class="prov-badge">FREE</span></div>
+    <div class="prov-pill">DeepSeek <span class="prov-badge">FREE TIER</span></div>
+    <div class="prov-pill">Mistral <span class="prov-badge">FREE TIER</span></div>
+    <div class="prov-pill">ZhipuAI <span class="prov-badge">FREE TIER</span></div>
+    <div class="prov-pill">OpenAI</div>
+    <div class="prov-pill">Anthropic</div>
+    <div class="prov-pill">xAI</div>
+    <div class="prov-pill">Nvidia NIM</div>
+    <div class="prov-pill">OpenRouter <span class="prov-badge">100+ Models</span></div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+  <div class="section-tag">FAQ</div>
+  <div class="section-title">Common questions</div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q"><span>Is ReadyTag free?</span><i class="faq-icon">+</i></div>
+      <div class="faq-a">Yes. With a free Groq API key, ReadyTag costs nothing to use. Other providers (OpenAI, Anthropic, etc.) use your own API key at their standard rates. Groq, Gemini, DeepSeek, Mistral, and ZhipuAI all have free tiers.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Which platforms are supported?</span><i class="faq-icon">+</i></div>
+      <div class="faq-a">Adobe Stock, Shutterstock, Freepik, and Vecteezy contributor portals. The extension automatically detects which portal you're on and activates the correct interface.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Is my API key safe?</span><i class="faq-icon">+</i></div>
+      <div class="faq-a">Yes. Your key is stored only in Chrome's local extension storage — it never leaves your browser or touches any ReadyTag server. API calls go directly from the extension to your provider's API.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>What is BYOK?</span><i class="faq-icon">+</i></div>
+      <div class="faq-a">"Bring Your Own Key" — you connect ReadyTag to an AI provider using your own API key. You're in full control of usage and billing. ReadyTag never charges you for AI usage.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>What is Vision AI mode?</span><i class="faq-icon">+</i></div>
+      <div class="faq-a">When enabled, the extension sends a thumbnail of your asset to a vision-capable model (Groq, OpenAI, Anthropic, or Gemini) for richer, image-aware metadata. Providers without vision support will show a warning in the panel.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>What is OpenRouter?</span><i class="faq-icon">+</i></div>
+      <div class="faq-a">OpenRouter is an API aggregator that gives you access to 100+ models from a single API key — useful if you want to experiment with different models without managing multiple accounts.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>When is Batch Mode / Pro coming?</span><i class="faq-icon">+</i></div>
+      <div class="faq-a">CSV Batch Export is already available in v2.0. ReadyTag Pro (Auto-Pilot — full portfolio automation) is in active development. Follow on GitHub or support on Patreon for updates.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-copy">ReadyTag © 2026</div>
+  <div class="footer-links">
+    <a href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank">Chrome Web Store</a>
+    <a href="https://github.com/NiL4gh" target="_blank">GitHub</a>
+    <a href="https://www.patreon.com/MetaRefresh" target="_blank">Patreon</a>
+  </div>
+  <a class="footer-cta" href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank">Add to Chrome — It's Free</a>
+</footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
