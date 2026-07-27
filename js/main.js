@@ -233,7 +233,22 @@
   }
 
   /**
-   * 7. Global Expose & Auto-Initialization
+   * 7. Vanilla Tilt Initialization
+   */
+  function initTilt() {
+    if (typeof VanillaTilt !== 'undefined') {
+      const cards = document.querySelectorAll('.feature-card, .platform-card');
+      VanillaTilt.init(cards, {
+        max: 5,
+        speed: 400,
+        glare: true,
+        "max-glare": 0.1
+      });
+    }
+  }
+
+  /**
+   * 8. Global Expose & Auto-Initialization
    */
   function initMainSite() {
     initStickyNavbar();
@@ -242,6 +257,32 @@
     initFAQAccordion();
     initMobileNav();
     initScrollReveal();
+    initTilt();
+  }
+
+  // Initialize Swup
+  let swup;
+  function initSwup() {
+    if (window.location.protocol === 'file:') {
+      console.warn("Swup page transitions are disabled locally (file:// protocol) due to browser CORS restrictions. Run a local server to test transitions.");
+      return;
+    }
+
+    if (typeof Swup !== 'undefined' && !swup) {
+      swup = new Swup({
+        containers: ['#swup'],
+        animationSelector: '[class*="transition-"]'
+      });
+      
+      // Re-init scripts after page transition
+      swup.hooks.on('page:view', () => {
+        initSmoothAnchors();
+        initPlatformMatrixTabs();
+        initFAQAccordion();
+        initScrollReveal();
+        initTilt();
+      });
+    }
   }
 
   // Expose global initMainSite function
@@ -249,8 +290,12 @@
 
   // Auto initialize on DOMContentLoaded
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMainSite);
+    document.addEventListener('DOMContentLoaded', () => {
+      initMainSite();
+      initSwup();
+    });
   } else {
     initMainSite();
+    initSwup();
   }
 })();
