@@ -1,530 +1,763 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ReadyTag — AI Metadata for Stock Contributors</title>
-<meta name="description" content="Generate SEO-ready titles and keywords for Adobe Stock, Shutterstock, Freepik, and Vecteezy in one click. Free with Groq. No subscription required.">
-<link rel="icon" type="image/png" href="assets/icon128.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:      #0a0c14;
-  --surface: #111422;
-  --raised:  #181b2c;
-  --accent:  #7289ff;
-  --accent-h:#5c73f5;
-  --text:    #e8eaf6;
-  --text2:   #c8cde8;
-  --muted:   #6b7194;
-  --border:  #1e2140;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReadyTag — AI Stock Photo &amp; Vector Metadata Generator | Free BYOK Chrome Extension</title>
+  <meta name="description" content="Generate SEO-optimized titles &amp; keywords for Adobe Stock, Shutterstock, Freepik, and Vecteezy using 10 AI models (Groq, Gemini, DeepSeek, OpenAI). Free with your own API key.">
+  <meta name="keywords" content="stock photo metadata, stock photography tags, adobe stock keywording, shutterstock metadata generator, freepik tags, vecteezy keywords, vision ai stock photos, bring your own key extension, groq llama 3.3 stock metadata">
+  <meta name="author" content="ReadyTag">
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <!-- OpenGraph & Twitter Cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://readytag.app/">
+  <meta property="og:title" content="ReadyTag — AI Stock Photo &amp; Vector Metadata Generator">
+  <meta property="og:description" content="Generate SEO-optimized titles &amp; keywords for Adobe Stock, Shutterstock, Freepik, and Vecteezy using 10 AI models. Free with your own API key.">
+  <meta property="og:image" content="../readytag_v2.0_public/icons/icon128.png">
 
-html { scroll-behavior: smooth; }
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://readytag.app/">
+  <meta name="twitter:title" content="ReadyTag — AI Stock Photo &amp; Vector Metadata Generator">
+  <meta name="twitter:description" content="Generate SEO-optimized titles &amp; keywords for Adobe Stock, Shutterstock, Freepik, and Vecteezy using 10 AI models. Free with your own API key.">
+  <meta name="twitter:image" content="../readytag_v2.0_public/icons/icon128.png">
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
-}
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../readytag_v2.0_public/icons/icon128.png">
 
-a { color: inherit; text-decoration: none; }
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 
-/* ── Navbar ── */
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-  height: 60px;
-}
-.nav-logo {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -.04em;
-  color: var(--text);
-}
-.nav-logo span { color: var(--accent); }
-.nav-cta {
-  display: inline-block;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-  border-radius: 8px;
-  padding: 7px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  transition: background .15s, color .15s;
-}
-.nav-cta:hover { background: var(--accent); color: #fff; }
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
 
-/* ── Hero ── */
-.hero {
-  text-align: center;
-  padding: 96px 24px 80px;
-  max-width: 820px;
-  margin: 0 auto;
-}
-.hero h1 {
-  font-size: 56px;
-  font-weight: 800;
-  letter-spacing: -.04em;
-  line-height: 1.1;
-  margin-bottom: 20px;
-  color: var(--text);
-}
-.hero h1 span { color: var(--accent); }
-.hero p {
-  font-size: 20px;
-  color: var(--muted);
-  margin-bottom: 36px;
-  line-height: 1.5;
-}
-.hero-cta {
-  display: inline-block;
-  background: var(--accent);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  border-radius: 10px;
-  padding: 14px 36px;
-  box-shadow: 0 4px 24px rgba(114,137,255,.35);
-  transition: background .15s, transform .1s;
-}
-.hero-cta:hover { background: var(--accent-h); transform: translateY(-1px); }
-.platform-badges {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 24px;
-  flex-wrap: wrap;
-}
-.plat-badge {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 5px 14px;
-}
-
-/* ── Demo ── */
-.demo-section {
-  max-width: 960px;
-  margin: 0 auto 80px;
-  padding: 0 24px;
-  text-align: center;
-}
-.demo-img-wrap {
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  box-shadow: 0 8px 40px rgba(114,137,255,.15);
-}
-.demo-img-wrap img { width: 100%; display: block; }
-.demo-placeholder {
-  background: var(--surface);
-  height: 420px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 14px;
-}
-.demo-placeholder .icon { font-size: 40px; }
-.demo-caption {
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 12px;
-}
-
-/* ── Section layout ── */
-.section {
-  max-width: 1080px;
-  margin: 0 auto 96px;
-  padding: 0 24px;
-}
-.section-tag {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-.section-title {
-  font-size: 36px;
-  font-weight: 800;
-  letter-spacing: -.03em;
-  color: var(--text);
-  margin-bottom: 48px;
-}
-
-/* ── Features Grid ── */
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-.feat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 24px;
-  transition: border-color .2s;
-}
-.feat-card:hover { border-color: rgba(114,137,255,.4); }
-.feat-icon { font-size: 28px; margin-bottom: 12px; }
-.feat-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.feat-desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
-
-/* ── How It Works ── */
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-.step {
-  text-align: center;
-  padding: 32px 20px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  position: relative;
-}
-.step-num {
-  width: 40px;
-  height: 40px;
-  background: rgba(114,137,255,.12);
-  border: 1.5px solid rgba(114,137,255,.3);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--accent);
-  margin: 0 auto 16px;
-}
-.step-title {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-.step-desc { font-size: 14px; color: var(--muted); line-height: 1.5; }
-
-/* ── Providers ── */
-.providers-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-.prov-pill {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 8px 18px;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--text2);
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.prov-badge {
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: .04em;
-  color: #fff;
-  background: var(--accent);
-  border-radius: 4px;
-  padding: 2px 6px;
-}
-
-/* ── FAQ ── */
-.faq-list { display: flex; flex-direction: column; gap: 8px; }
-.faq-item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.faq-q {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  cursor: pointer;
-  user-select: none;
-  transition: background .15s;
-}
-.faq-q:hover { background: var(--raised); }
-.faq-icon {
-  font-size: 20px;
-  color: var(--accent);
-  flex-shrink: 0;
-  transition: transform .2s;
-  font-style: normal;
-}
-.faq-item.open .faq-icon { transform: rotate(45deg); }
-.faq-a {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height .3s ease, padding .3s;
-  font-size: 14px;
-  color: var(--muted);
-  line-height: 1.6;
-  padding: 0 20px;
-}
-.faq-item.open .faq-a {
-  max-height: 200px;
-  padding: 0 20px 16px;
-}
-
-/* ── Footer ── */
-footer {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 28px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.footer-copy { font-size: 13px; color: var(--muted); }
-.footer-links { display: flex; align-items: center; gap: 20px; }
-.footer-links a {
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 500;
-  transition: color .15s;
-}
-.footer-links a:hover { color: var(--accent); }
-.footer-cta {
-  display: inline-block;
-  background: var(--accent);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 8px;
-  padding: 9px 22px;
-  transition: background .15s;
-}
-.footer-cta:hover { background: var(--accent-h); }
-
-/* ── Responsive ── */
-@media (max-width: 768px) {
-  .nav { padding: 0 20px; }
-  .nav-cta { display: none; }
-  .hero h1 { font-size: 36px; }
-  .hero p { font-size: 16px; }
-  .features-grid { grid-template-columns: repeat(2, 1fr); }
-  .steps { grid-template-columns: 1fr; }
-  .section-title { font-size: 28px; }
-  footer { flex-direction: column; align-items: flex-start; }
-}
-@media (max-width: 480px) {
-  .features-grid { grid-template-columns: 1fr; }
-  .hero h1 { font-size: 30px; }
-}
-</style>
+  <!-- Schema.org SoftwareApplication JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ReadyTag",
+    "operatingSystem": "Chrome, Edge, Brave, Opera",
+    "applicationCategory": "BrowserExtension",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Generate SEO-optimized titles & keywords for Adobe Stock, Shutterstock, Freepik, and Vecteezy using 10 AI models (Groq, Gemini, DeepSeek, OpenAI). Free with your own API key."
+  }
+  </script>
 </head>
 <body>
-
-<!-- Navbar -->
-<nav class="nav">
-  <div class="nav-logo">Ready<span>Tag</span></div>
-  <a class="nav-cta" href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank">Add to Chrome</a>
-</nav>
-
-<!-- Hero -->
-<section class="hero">
-  <h1>AI Metadata for<br><span>Stock Photos</span> — In One Click</h1>
-  <p>Generate SEO-ready titles and keywords directly in Adobe Stock, Shutterstock, Freepik, and Vecteezy. Free with Groq. No subscription required.</p>
-  <a class="hero-cta" href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank">Add to Chrome — It's Free</a>
-  <div class="platform-badges">
-    <span class="plat-badge">Adobe Stock</span>
-    <span class="plat-badge">Shutterstock</span>
-    <span class="plat-badge">Freepik</span>
-    <span class="plat-badge">Vecteezy</span>
+  <!-- Ambient Glowing Background Gradient Mesh -->
+  <div class="bg-mesh-canvas">
+    <div class="mesh-orb mesh-orb-1"></div>
+    <div class="mesh-orb mesh-orb-2"></div>
+    <div class="mesh-orb mesh-orb-3"></div>
+    <div class="mesh-orb mesh-orb-4"></div>
   </div>
-</section>
 
-<!-- Demo Screenshot -->
-<div class="demo-section">
-  <div class="demo-img-wrap">
-    <!-- Drop docs/assets/demo.png (or demo.gif) here to replace this placeholder -->
-    <div class="demo-placeholder">
-      <span class="icon">🖼️</span>
-      <span>Drop <code>docs/assets/demo.png</code> to show the extension in action</span>
-    </div>
-    <!-- Uncomment once you have the screenshot:
-    <img src="assets/demo.png" alt="ReadyTag panel open on Adobe Stock Contributor Portal">
-    -->
-  </div>
-  <div class="demo-caption">ReadyTag's panel open on Adobe Stock Contributor Portal</div>
-</div>
+  <!-- 2. Main Sticky Navigation Bar -->
+  <nav id="main-nav" class="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 17L12 22L22 17" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 12L12 17L22 12" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>ReadyTag</span>
+        <span class="nav-badge">v2.0</span>
+      </a>
 
-<!-- Features -->
-<div class="section">
-  <div class="section-tag">Features</div>
-  <div class="section-title">Everything you need to tag faster</div>
-  <div class="features-grid">
-    <div class="feat-card">
-      <div class="feat-icon">✦</div>
-      <div class="feat-title">AI-Powered Metadata</div>
-      <div class="feat-desc">Generates on-brand titles and keyword sets using the latest LLMs — tuned for stock marketplace SEO.</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">🖼</div>
-      <div class="feat-title">4 Platforms</div>
-      <div class="feat-desc">Works natively on Adobe Stock, Shutterstock, Freepik, and Vecteezy contributor portals.</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">🔑</div>
-      <div class="feat-title">Free with Groq</div>
-      <div class="feat-desc">Bring your own Groq API key — it's free, no credit card needed. No ReadyTag subscription required.</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">👁</div>
-      <div class="feat-title">Vision AI</div>
-      <div class="feat-desc">Analyzes your image visually when text context isn't enough. Supports Groq, OpenAI, Anthropic, and Gemini.</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">📋</div>
-      <div class="feat-title">CSV Batch Export</div>
-      <div class="feat-desc">Export metadata for entire upload batches before submitting. No portal required.</div>
-    </div>
-    <div class="feat-card">
-      <div class="feat-icon">🔒</div>
-      <div class="feat-title">Privacy-First</div>
-      <div class="feat-desc">Your API key never leaves your browser. Stored only in Chrome's local extension storage.</div>
-    </div>
-  </div>
-</div>
+      <div id="nav-links-container">
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#platforms">Platforms</a></li>
+          <li><a href="#providers">AI Models</a></li>
+          <li><a href="#growth">SEO &amp; ROI</a></li>
+          <li><a href="#calculator">Calculator</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
 
-<!-- How It Works -->
-<div class="section">
-  <div class="section-tag">How It Works</div>
-  <div class="section-title">Up and running in 3 steps</div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-title">Install</div>
-      <div class="step-desc">Add ReadyTag from the Chrome Web Store — one click, no sign-up.</div>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" class="btn-primary shimmer-effect" target="_blank" rel="noopener">Add to Chrome — Free</a>
+      </div>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-title">Connect</div>
-      <div class="step-desc">Enter your free Groq API key (or any of 10 supported providers) in the extension popup.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-title">Generate</div>
-      <div class="step-desc">Open your contributor portal and click "Generate" on any asset. Done.</div>
-    </div>
-  </div>
-</div>
+  </nav>
 
-<!-- Providers -->
-<div class="section">
-  <div class="section-tag">Providers</div>
-  <div class="section-title">10 AI providers supported</div>
-  <div class="providers-row">
-    <div class="prov-pill">Groq <span class="prov-badge">FREE</span></div>
-    <div class="prov-pill">Google Gemini <span class="prov-badge">FREE</span></div>
-    <div class="prov-pill">DeepSeek <span class="prov-badge">FREE TIER</span></div>
-    <div class="prov-pill">Mistral <span class="prov-badge">FREE TIER</span></div>
-    <div class="prov-pill">ZhipuAI <span class="prov-badge">FREE TIER</span></div>
-    <div class="prov-pill">OpenAI</div>
-    <div class="prov-pill">Anthropic</div>
-    <div class="prov-pill">xAI</div>
-    <div class="prov-pill">Nvidia NIM</div>
-    <div class="prov-pill">OpenRouter <span class="prov-badge">100+ Models</span></div>
-  </div>
-</div>
+  <!-- 3. Hero Section with Keyword Canvas & Mockup Frame -->
+  <section id="hero" class="hero">
+    <canvas id="hero-keyword-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+    
+    <div class="container" style="position: relative; z-index: 1;">
+      <div class="hero-badge pulse-ring">
+        <span>Chrome Extension</span> · <span>MV3</span> · <span>100% Privacy BYOK</span>
+      </div>
 
-<!-- FAQ -->
-<div class="section">
-  <div class="section-tag">FAQ</div>
-  <div class="section-title">Common questions</div>
-  <div class="faq-list">
-    <div class="faq-item">
-      <div class="faq-q"><span>Is ReadyTag free?</span><i class="faq-icon">+</i></div>
-      <div class="faq-a">Yes. With a free Groq API key, ReadyTag costs nothing to use. Other providers (OpenAI, Anthropic, etc.) use your own API key at their standard rates. Groq, Gemini, DeepSeek, Mistral, and ZhipuAI all have free tiers.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q"><span>Which platforms are supported?</span><i class="faq-icon">+</i></div>
-      <div class="faq-a">Adobe Stock, Shutterstock, Freepik, and Vecteezy contributor portals. The extension automatically detects which portal you're on and activates the correct interface.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q"><span>Is my API key safe?</span><i class="faq-icon">+</i></div>
-      <div class="faq-a">Yes. Your key is stored only in Chrome's local extension storage — it never leaves your browser or touches any ReadyTag server. API calls go directly from the extension to your provider's API.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q"><span>What is BYOK?</span><i class="faq-icon">+</i></div>
-      <div class="faq-a">"Bring Your Own Key" — you connect ReadyTag to an AI provider using your own API key. You're in full control of usage and billing. ReadyTag never charges you for AI usage.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q"><span>What is Vision AI mode?</span><i class="faq-icon">+</i></div>
-      <div class="faq-a">When enabled, the extension sends a thumbnail of your asset to a vision-capable model (Groq, OpenAI, Anthropic, or Gemini) for richer, image-aware metadata. Providers without vision support will show a warning in the panel.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q"><span>What is OpenRouter?</span><i class="faq-icon">+</i></div>
-      <div class="faq-a">OpenRouter is an API aggregator that gives you access to 100+ models from a single API key — useful if you want to experiment with different models without managing multiple accounts.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q"><span>When is Batch Mode / Pro coming?</span><i class="faq-icon">+</i></div>
-      <div class="faq-a">CSV Batch Export is already available in v2.0. ReadyTag Pro (Auto-Pilot — full portfolio automation) is in active development. Follow on GitHub or support on Patreon for updates.</div>
-    </div>
-  </div>
-</div>
+      <h1 class="hero-title">
+        Turn Stock Media into Royalty Revenue with <span class="gradient-text">Vision AI Metadata</span>
+      </h1>
 
-<!-- Footer -->
-<footer>
-  <div class="footer-copy">ReadyTag © 2026</div>
-  <div class="footer-links">
-    <a href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank">Chrome Web Store</a>
-    <a href="https://github.com/NiL4gh" target="_blank">GitHub</a>
-    <a href="https://www.patreon.com/MetaRefresh" target="_blank">Patreon</a>
-  </div>
-  <a class="footer-cta" href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank">Add to Chrome — It's Free</a>
-</footer>
+      <p class="hero-subtitle">
+        Generate platform-optimized titles and ranked tags for Adobe Stock, Shutterstock, Freepik, and Vecteezy in seconds. 10 AI models supported — 100% free with your own Groq or Gemini key.
+      </p>
 
-<script>
-// FAQ accordion
-document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
-    const item = q.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  });
-});
-</script>
+      <div class="hero-ctas">
+        <a href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" class="btn-primary shimmer-effect" target="_blank" rel="noopener">
+          Add to Chrome — Free
+        </a>
+        <a href="#extension-preview-root" class="btn-ghost">
+          Try Live Demo ↓
+        </a>
+      </div>
+
+      <!-- Extension Preview Mockup Frame Structure initialized by js/extension-mockup.js -->
+      <div class="canvas-wrapper animate-on-scroll">
+        <div id="extension-preview-root" class="mockup extension-frame"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Supported Platforms & Rule Compliance Bar -->
+  <section id="platforms" class="platforms-bar">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <span class="nav-badge" style="margin-bottom: 0.5rem;">Platform-Aware Engine</span>
+        <h2>Strict Contributor Rule Compliance</h2>
+        <p>ReadyTag automatically trims, formats, and enforces word count &amp; character limits for all top stock marketplaces.</p>
+      </div>
+
+      <!-- Matrix Tab Selector -->
+      <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem;">
+        <button class="matrix-tab-btn active btn-ghost" data-platform="all" style="padding: 0.4rem 1rem; font-size: 0.85rem;">All Platforms</button>
+        <button class="matrix-tab-btn btn-ghost" data-platform="adobe" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Adobe Stock</button>
+        <button class="matrix-tab-btn btn-ghost" data-platform="shutterstock" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Shutterstock</button>
+        <button class="matrix-tab-btn btn-ghost" data-platform="freepik" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Freepik</button>
+        <button class="matrix-tab-btn btn-ghost" data-platform="vecteezy" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Vecteezy</button>
+      </div>
+
+      <div class="platforms-grid">
+        <div class="platform-card platform-rule-card animate-on-scroll" data-platform="adobe">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1.15rem; color: #ff0000;">Adobe Stock</h3>
+            <span class="platform-rule-badge">30 Keywords Max</span>
+          </div>
+          <p style="font-size: 0.9rem;">Auto-ranks keywords by commercial search relevance. Strict 90-character title formatting.</p>
+          <div style="margin-top: auto; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">
+            Title Limit: <strong>90 Chars</strong> | Max Tags: <strong>30</strong>
+          </div>
+        </div>
+
+        <div class="platform-card platform-rule-card animate-on-scroll" data-platform="shutterstock">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1.15rem; color: #ff1e46;">Shutterstock</h3>
+            <span class="platform-rule-badge">50 Keywords Max</span>
+          </div>
+          <p style="font-size: 0.9rem;">Deep semantic tag clustering up to 50 keywords with 200-character descriptive title support.</p>
+          <div style="margin-top: auto; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">
+            Title Limit: <strong>200 Chars</strong> | Max Tags: <strong>50</strong>
+          </div>
+        </div>
+
+        <div class="platform-card platform-rule-card animate-on-scroll" data-platform="freepik">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1.15rem; color: #0b6dfd;">Freepik</h3>
+            <span class="platform-rule-badge">30 Keywords Max</span>
+          </div>
+          <p style="font-size: 0.9rem;">Optimized vector and photo tagging with 120-character maximum title enforcement.</p>
+          <div style="margin-top: auto; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">
+            Title Limit: <strong>120 Chars</strong> | Max Tags: <strong>30</strong>
+          </div>
+        </div>
+
+        <div class="platform-card platform-rule-card animate-on-scroll" data-platform="vecteezy">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1.15rem; color: #ff7518;">Vecteezy</h3>
+            <span class="platform-rule-badge">49 Keywords Max</span>
+          </div>
+          <p style="font-size: 0.9rem;">Targeted illustrator tags tailored for search visibility and exact 49-keyword limits.</p>
+          <div style="margin-top: auto; font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">
+            Title Limit: <strong>180 Chars</strong> | Max Tags: <strong>49</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Contributor Growth & Search Boost Section -->
+  <section id="growth" class="growth-section">
+    <div class="container">
+      <div class="growth-grid">
+        <div class="animate-on-scroll">
+          <span class="nav-badge" style="margin-bottom: 1rem;">Algorithmic Advantage</span>
+          <h2>Why AI Keyword Ranking Drives Sales Growth</h2>
+          <p style="margin-bottom: 1.5rem;">
+            Stock photo algorithms index title front-loading and top-ranked tags. Precise AI vision metadata propels your assets from buried search pages directly to Page 1 commercial visibility.
+          </p>
+
+          <div class="boost-stat-card">
+            <div>
+              <div style="font-weight: 700; font-size: 1rem; color: var(--text-main);">Search Placement Indexing</div>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Top-5 priority tag placement improves search discoverability</div>
+            </div>
+            <div class="boost-stat-val">SEO</div>
+          </div>
+
+          <div class="boost-stat-card">
+            <div>
+              <div style="font-weight: 700; font-size: 1rem; color: var(--text-main);">Zero Overflow Rejections</div>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Enforces exact platform character &amp; keyword limits</div>
+            </div>
+            <div class="boost-stat-val" style="color: var(--accent-cyan);">0%</div>
+          </div>
+
+          <div class="boost-stat-card">
+            <div>
+              <div style="font-weight: 700; font-size: 1rem; color: var(--text-main);">Time Saved per Upload</div>
+              <div style="font-size: 0.85rem; color: var(--text-muted);">Compares ~5m manual tagging vs ~30s AI batch processing</div>
+            </div>
+            <div class="boost-stat-val" style="color: var(--accent-indigo);">88%</div>
+          </div>
+        </div>
+
+        <!-- SVG Search Placement Rank Graphic -->
+        <div class="rank-chart-box animate-on-scroll">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-main);">Search Position trajectory</div>
+            <span class="badge-speed">Page 9 → Page 1 Boost</span>
+          </div>
+
+          <svg width="100%" height="240" viewBox="0 0 500 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Grid Lines -->
+            <line x1="40" y1="40" x2="480" y2="40" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4"/>
+            <line x1="40" y1="100" x2="480" y2="100" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4"/>
+            <line x1="40" y1="160" x2="480" y2="160" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4"/>
+            <line x1="40" y1="210" x2="480" y2="210" stroke="rgba(255,255,255,0.08)"/>
+
+            <text x="10" y="44" fill="#64748b" font-size="10" font-family="monospace">#1</text>
+            <text x="10" y="104" fill="#64748b" font-size="10" font-family="monospace">#15</text>
+            <text x="10" y="164" fill="#64748b" font-size="10" font-family="monospace">#50</text>
+
+            <!-- Gradient Area -->
+            <path d="M 40 200 Q 150 190, 240 140 T 460 35 L 460 210 L 40 210 Z" fill="url(#chartGradient)"/>
+
+            <!-- Trend Line -->
+            <path d="M 40 200 Q 150 190, 240 140 T 460 35" stroke="#6366f1" stroke-width="4" stroke-linecap="round" class="animated-stroke"/>
+
+            <!-- Target Glow Dot -->
+            <circle cx="460" cy="35" r="7" fill="#06b6d4"/>
+            <circle cx="460" cy="35" r="14" fill="#06b6d4" opacity="0.3" class="floating-tag"/>
+          </svg>
+
+          <div style="display: flex; justify-content: space-between; margin-top: 1rem; font-size: 0.85rem; color: var(--text-dim);">
+            <span>Standard Keywording</span>
+            <span style="color: var(--accent-cyan); font-weight: 600;">ReadyTag Vision AI Optimization</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Feature Grid Section -->
+  <section id="features" class="feature-grid-section" style="padding: 6rem 0;">
+    <div class="container">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 3.5rem;">
+        <span class="nav-badge" style="margin-bottom: 0.75rem;">Complete Toolkit</span>
+        <h2>Everything a Contributor Needs</h2>
+        <p>Built directly for stock photographers, vector illustrators, and 3D artists to maximize efficiency and earnings.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card animate-on-scroll">
+          <span class="feature-tag">Vision AI</span>
+          <div class="feature-icon">👁️</div>
+          <h3>Vision AI Engine</h3>
+          <p>Scans the image content of your thumbnails. Analyzes objects, colors, composition, lighting, and mood to generate contextual tags beyond file names.</p>
+        </div>
+
+        <div class="feature-card animate-on-scroll">
+          <span class="feature-tag">Automation</span>
+          <div class="feature-icon">⚡</div>
+          <h3>1-Click Batch Portfolio Auto-Tag</h3>
+          <p>Auto-process every visible asset inside your contributor portal in a single click with built-in rate-limit delay protection.</p>
+        </div>
+
+        <div class="feature-card animate-on-scroll">
+          <span class="feature-tag">Offline</span>
+          <div class="feature-icon">⤓</div>
+          <h3>CSV Bulk Export</h3>
+          <p>Drag in local image files, generate titles and keywords in bulk, and download a ready-to-upload spreadsheet without needing active portal tabs.</p>
+        </div>
+
+        <div class="feature-card animate-on-scroll">
+          <span class="feature-tag">Privacy</span>
+          <div class="feature-icon">🔑</div>
+          <h3>BYOK Privacy Assurance</h3>
+          <p>Your API keys remain strictly stored inside your local Chrome browser storage. ReadyTag never routes keys to proprietary middleware servers.</p>
+        </div>
+
+        <div class="feature-card animate-on-scroll">
+          <span class="feature-tag">Customization</span>
+          <div class="feature-icon">🎛️</div>
+          <h3>Custom Presets &amp; Negative Keywords</h3>
+          <p>Save reusable prompt presets, force mandatory brand tags, and specify negative keywords to prevent unwanted terms.</p>
+        </div>
+
+        <div class="feature-card animate-on-scroll">
+          <span class="feature-tag">Compliance</span>
+          <div class="feature-icon">🛡️</div>
+          <h3>Platform-Aware Rules Engine</h3>
+          <p>Enforces character limits, word count maximums, and duplicate keyword removal tailored specifically to Adobe, Shutterstock, Freepik &amp; Vecteezy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 10 AI Provider Matrix Section -->
+  <section id="providers" class="provider-section provider-table">
+    <div class="container">
+      <div style="text-align: center; max-width: 750px; margin: 0 auto 3rem;">
+        <span class="nav-badge" style="margin-bottom: 0.75rem;">Model Choice</span>
+        <h2>Supported AI Providers &amp; Models</h2>
+        <p>Connect your preferred AI model. Use 100% free API keys from Groq or Gemini, or hook up your existing OpenAI, Anthropic, or DeepSeek accounts.</p>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="matrix-table animate-on-scroll">
+          <thead>
+            <tr>
+              <th>Provider</th>
+              <th>Supported Model</th>
+              <th>Cost Tier</th>
+              <th>Capabilities</th>
+              <th>Speed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Groq</strong></td>
+              <td>Llama 3.3 70B Versatile</td>
+              <td><span class="badge-free">100% FREE</span></td>
+              <td><span class="badge-vision">Vision &amp; Text</span></td>
+              <td>⚡ Ultra-Fast (~300ms)</td>
+            </tr>
+            <tr>
+              <td><strong>Google Gemini</strong></td>
+              <td>Gemini 2.5 Flash</td>
+              <td><span class="badge-free">100% FREE</span></td>
+              <td><span class="badge-vision">Multimodal Vision</span></td>
+              <td>⚡ Fast (~800ms)</td>
+            </tr>
+            <tr>
+              <td><strong>DeepSeek</strong></td>
+              <td>DeepSeek V3</td>
+              <td><span class="badge-free">Free Tier</span></td>
+              <td><span class="badge-free">Text &amp; Prompt</span></td>
+              <td>⚡ Fast (~900ms)</td>
+            </tr>
+            <tr>
+              <td><strong>Mistral AI</strong></td>
+              <td>Mistral Large / Pixtral 12B</td>
+              <td><span class="badge-free">Free Tier</span></td>
+              <td><span class="badge-vision">Vision Support</span></td>
+              <td>⚡ Fast (~1.1s)</td>
+            </tr>
+            <tr>
+              <td><strong>Nvidia NIM</strong></td>
+              <td>Llama 3.1 405B Instruct</td>
+              <td><span class="badge-free">Free Credits</span></td>
+              <td><span class="badge-free">High Reasoning</span></td>
+              <td>⚡ Normal (~1.5s)</td>
+            </tr>
+            <tr>
+              <td><strong>ZhipuAI</strong></td>
+              <td>GLM-4 Flash</td>
+              <td><span class="badge-free">FREE</span></td>
+              <td><span class="badge-vision">Vision Support</span></td>
+              <td>⚡ Fast (~700ms)</td>
+            </tr>
+            <tr>
+              <td><strong>OpenRouter</strong></td>
+              <td>100+ Aggregated Models</td>
+              <td><span class="badge-free">Free &amp; Paid</span></td>
+              <td><span class="badge-vision">Universal Vision</span></td>
+              <td>⚡ Variable</td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI</strong></td>
+              <td>GPT-4o / GPT-4o-mini</td>
+              <td><span class="badge-free" style="background: rgba(255,255,255,0.06); color: var(--text-muted);">Paid API</span></td>
+              <td><span class="badge-vision">Vision Pro</span></td>
+              <td>⚡ Fast (~1.0s)</td>
+            </tr>
+            <tr>
+              <td><strong>Anthropic</strong></td>
+              <td>Claude 3.5 Sonnet</td>
+              <td><span class="badge-free" style="background: rgba(255,255,255,0.06); color: var(--text-muted);">Paid API</span></td>
+              <td><span class="badge-vision">Vision Pro</span></td>
+              <td>⚡ Fast (~1.2s)</td>
+            </tr>
+            <tr>
+              <td><strong>xAI</strong></td>
+              <td>Grok 3 / Grok Vision</td>
+              <td><span class="badge-free" style="background: rgba(255,255,255,0.06); color: var(--text-muted);">Paid API</span></td>
+              <td><span class="badge-vision">Vision Support</span></td>
+              <td>⚡ Fast (~1.0s)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Competitors Comparison Matrix Section -->
+  <section id="competitors" class="competitors-section" style="padding: 6rem 0; background: rgba(18, 22, 32, 0.3); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+        <span class="nav-badge" style="margin-bottom: 0.75rem;">Fair Comparison</span>
+        <h2>ReadyTag vs. Traditional Solutions</h2>
+        <p>Why stock contributors are switching from clunky desktop apps and expensive monthly subscriptions to browser-native BYOK AI.</p>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="matrix-table animate-on-scroll">
+          <thead>
+            <tr>
+              <th>Feature / Metric</th>
+              <th style="color: var(--accent-cyan);">ReadyTag (BYOK Extension)</th>
+              <th>Legacy Desktop Apps</th>
+              <th>Paid SaaS Subscription Services</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Monthly Cost</strong></td>
+              <td><span class="badge-free">$0.00 / month (100% Free BYOK)</span></td>
+              <td>$15 - $30 / month</td>
+              <td>$19 - $49 / month</td>
+            </tr>
+            <tr>
+              <td><strong>Vision AI Processing</strong></td>
+              <td><span style="color: var(--accent-emerald);">✓ 10 Vision Models (Groq, Gemini, etc.)</span></td>
+              <td>✗ Text/Filename Only</td>
+              <td>Limited Credits per Month</td>
+            </tr>
+            <tr>
+              <td><strong>Privacy &amp; Key Control</strong></td>
+              <td><span style="color: var(--accent-emerald);">✓ 100% Local Storage (BYOK)</span></td>
+              <td>Requires Local Executables</td>
+              <td>✗ Central Server Key Storage</td>
+            </tr>
+            <tr>
+              <td><strong>Browser Native Integration</strong></td>
+              <td><span style="color: var(--accent-emerald);">✓ Auto-fills directly inside portals</span></td>
+              <td>✗ Manual CSV Export &amp; Re-upload</td>
+              <td>Web Dashboard Only</td>
+            </tr>
+            <tr>
+              <td><strong>Batch Automation</strong></td>
+              <td><span style="color: var(--accent-emerald);">✓ 1-Click Multi-Asset Batching</span></td>
+              <td>Complex desktop UI</td>
+              <td>Limited batch queues</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Interactive ROI & Time Saved Calculator -->
+  <section id="calculator" class="calculator-section" style="padding: 6rem 0;">
+    <div class="container">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 1rem;">
+        <span class="nav-badge" style="margin-bottom: 0.75rem;">ROI Estimator</span>
+        <h2>Calculate Your Time Saved &amp; Potential Earnings</h2>
+        <p>Adjust your monthly upload volume and keywording duration to see instant savings.</p>
+      </div>
+
+      <div class="calculator-box animate-on-scroll">
+        <div class="calc-slider-group">
+          <div>
+            <div style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 0.5rem;">
+              <span>Monthly Asset Uploads</span>
+              <span id="val-assets-display" style="color: var(--accent-indigo);">300 assets / month</span>
+            </div>
+            <input type="range" id="calc-assets" min="20" max="2000" step="10" value="300">
+          </div>
+
+          <div>
+            <div style="display: flex; justify-content: space-between; font-weight: 600; margin-bottom: 0.5rem;">
+              <span>Manual Keywording Time per Asset</span>
+              <span id="val-minutes-display" style="color: var(--accent-cyan);">5.0 mins / asset</span>
+            </div>
+            <input type="range" id="calc-minutes" min="1" max="15" step="0.5" value="5">
+          </div>
+
+          <div style="background: var(--bg-surface-2); padding: 1rem; border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-muted); border: 1px solid var(--border-color);">
+            💡 <strong>Calculation note:</strong> Assumes an 88% reduction in manual tagging time using ReadyTag's Vision AI + automated batch filling.
+          </div>
+        </div>
+
+        <div class="calc-result-grid">
+          <div class="calc-stat">
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Monthly Time Saved</div>
+            <div id="out-hours-monthly" class="calc-stat-number">22 hrs</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">Reclaimed for creation</div>
+          </div>
+
+          <div class="calc-stat">
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Yearly Hours Saved</div>
+            <div id="out-hours-yearly" class="calc-stat-number" style="color: var(--accent-emerald);">264 hrs</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">Over 11 full work days</div>
+          </div>
+
+          <div class="calc-stat" style="grid-column: span 2;">
+            <div style="font-size: 0.85rem; color: var(--text-muted);">Estimated Impression &amp; Search Boost Factor</div>
+            <div id="out-royalty-boost" class="calc-stat-number" style="color: var(--accent-violet);">+169 Units</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">Projected commercial index boost across stock platforms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. How It Works (3-Step Guide) -->
+  <section id="how-it-works" class="steps-section" style="padding: 6rem 0; background: rgba(18, 22, 32, 0.3); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="container">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 3.5rem;">
+        <span class="nav-badge" style="margin-bottom: 0.75rem;">Simple Setup</span>
+        <h2>Start Tagging in 3 Easy Steps</h2>
+        <p>No registration, no credit cards, no monthly fees.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
+        <div class="feature-card animate-on-scroll" style="text-align: center;">
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-indigo), var(--accent-violet)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.25rem;">1</div>
+          <h3>Install &amp; Add Free API Key</h3>
+          <p>Add ReadyTag to Chrome in 1-click. Generate a 100% free API key from Groq or Google Gemini in under 30 seconds.</p>
+        </div>
+
+        <div class="feature-card animate-on-scroll" style="text-align: center;">
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.25rem;">2</div>
+          <h3>Open Contributor Portal</h3>
+          <p>Navigate to your contributor dashboard on Adobe Stock, Shutterstock, Freepik, or Vecteezy upload manager.</p>
+        </div>
+
+        <div class="feature-card animate-on-scroll" style="text-align: center;">
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-emerald), var(--accent-cyan)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; margin: 0 auto 1.25rem;">3</div>
+          <h3>Auto-Fill Titles &amp; Keywords</h3>
+          <p>Click Generate or Batch Auto-Fill. ReadyTag scans thumbnails and populates compliant metadata instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Security & BYOK Architecture Section -->
+  <section id="security" class="security-section" style="padding: 6rem 0;">
+    <div class="container">
+      <div style="background: var(--bg-surface-1); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 3.5rem 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+        <div class="animate-on-scroll">
+          <span class="nav-badge" style="margin-bottom: 1rem;">Zero-Trust Architecture</span>
+          <h2>Your API Keys Never Leave Your Browser</h2>
+          <p style="margin-bottom: 1.5rem;">
+            ReadyTag is engineered under a zero-trust BYOK (Bring Your Own Key) philosophy. API keys are stored locally inside Chrome's secure storage (<code style="font-family: var(--font-mono); color: var(--accent-cyan);">chrome.storage.local</code>).
+          </p>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem; color: var(--text-muted);">
+            <li>✓ Direct HTTPS API request execution between browser and provider</li>
+            <li>✓ Optional lightweight Cloudflare Worker CORS proxy option</li>
+            <li>✓ Zero centralized tracking databases or user telemetry logging</li>
+            <li>✓ Full source code open for audit and verification</li>
+          </ul>
+        </div>
+
+        <div class="animate-on-scroll" style="background: var(--bg-surface-2); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted);">
+          <div style="color: var(--accent-emerald); margin-bottom: 0.5rem;">// Client-Side Security Guarantee</div>
+          <div style="color: var(--text-main);">const key = await chrome.storage.local.get('groq_key');</div>
+          <div style="color: var(--text-dim); margin-bottom: 1rem;">// Requests route straight to API providers</div>
+          <div>fetch('https://api.groq.com/openai/v1/chat/completions', {</div>
+          <div style="padding-left: 1.25rem;">headers: { 'Authorization': `Bearer ${key}` },</div>
+          <div style="padding-left: 1.25rem;">body: JSON.stringify({ model: 'llama-3.3-70b-versatile' })</div>
+          <div>});</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Accordion FAQ Section -->
+  <section id="faq" class="faq-section" style="padding: 6rem 0; background: rgba(18, 22, 32, 0.3); border-top: 1px solid var(--border-color);">
+    <div class="container">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+        <span class="nav-badge" style="margin-bottom: 0.75rem;">Got Questions?</span>
+        <h2>Frequently Asked Questions</h2>
+        <p>Everything you need to know about ReadyTag BYOK extension.</p>
+      </div>
+
+      <div class="faq-accordion animate-on-scroll">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How do I get a free Groq or Gemini API key?</span>
+            <span style="font-size: 1.25rem;">+</span>
+          </div>
+          <div class="faq-answer">
+            Groq and Google Gemini offer free developer tiers. You can generate a free API key at console.groq.com or aistudio.google.com in under 60 seconds with no credit card required. Paste your key into ReadyTag options to start tagging immediately.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How does Vision AI generate keywords from images?</span>
+            <span style="font-size: 1.25rem;">+</span>
+          </div>
+          <div class="faq-answer">
+            When Vision mode is enabled, ReadyTag encodes the asset thumbnail into a base64 payload and sends it to your selected vision model (e.g. Gemini 2.5 Flash, GPT-4o, or Pixtral). The AI analyzes objects, background textures, color schemes, and lighting to suggest accurate commercial keywords.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Can I export metadata to CSV for offline usage?</span>
+            <span style="font-size: 1.25rem;">+</span>
+          </div>
+          <div class="faq-answer">
+            Yes! ReadyTag includes a standalone CSV Bulk Export tool. You can drag image files into the extension popup, run bulk vision generation, and download a CSV file formatted for Adobe Stock, Shutterstock, or custom microstock submission tools.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Is my API key safe in ReadyTag?</span>
+            <span style="font-size: 1.25rem;">+</span>
+          </div>
+          <div class="faq-answer">
+            Absolutely. ReadyTag operates strictly client-side using Manifest V3 and Chrome's storage API (<code style="font-family: var(--font-mono);">chrome.storage.local</code>). Your keys are never sent to external servers or recorded in telemetry databases.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>How does ReadyTag comply with stock platform contributor rules?</span>
+            <span style="font-size: 1.25rem;">+</span>
+          </div>
+          <div class="faq-answer">
+            ReadyTag has custom rule profiles for Adobe Stock (30 keywords / 90 char title), Shutterstock (50 keywords / 200 char title), Freepik (30 keywords / 120 char title), and Vecteezy (49 keywords / 180 char title). It automatically removes duplicate tags and trims metadata before populating fields.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Does ReadyTag support batch tagging for large portfolios?</span>
+            <span style="font-size: 1.25rem;">+</span>
+          </div>
+          <div class="faq-answer">
+            Yes. The 1-Click Batch Portfolio Auto-Tag feature iterates through all uploaded assets visible in your portal tab. A configurable delay (default 1.5 seconds) between items prevents API rate limit errors and ensures smooth operation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. Bottom CTA Banner & Footer -->
+  <section id="cta" class="cta-banner">
+    <div class="container">
+      <div class="cta-glass-card animate-on-scroll">
+        <h2 style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem;">
+          Supercharge Your Stock Portfolio Today
+        </h2>
+        <p style="max-width: 600px; margin: 0 auto 2.5rem; font-size: 1.15rem; color: var(--text-muted);">
+          Join stock photo, vector, and 3D contributors saving hours every week. 100% free with your own API key.
+        </p>
+        <a href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" class="btn-primary shimmer-effect" style="padding: 1rem 2.25rem; font-size: 1.1rem;" target="_blank" rel="noopener">
+          Add to Chrome — Free
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="nav-logo" style="margin-bottom: 1rem;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17L12 22L22 17" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>ReadyTag</span>
+            <span class="nav-badge">v2.0</span>
+          </a>
+          <p style="font-size: 0.9rem; color: var(--text-muted); max-width: 300px; margin-bottom: 1.5rem;">
+            AI-powered stock photo and vector metadata generator. Built for contributors, powered by BYOK AI models.
+          </p>
+          <div style="font-size: 0.9rem; color: var(--text-muted);">
+            <strong style="color: var(--text-main); display: block; margin-bottom: 0.5rem;">Contact Developer</strong>
+            <a href="mailto:niloypal09@gmail.com" style="color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              niloypal09@gmail.com
+            </a>
+            <a href="https://wa.me/8801765647572" target="_blank" rel="noopener" style="color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              WhatsApp: +8801765647572
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main);">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#platforms">Supported Platforms</a></li>
+            <li><a href="#providers">AI Models</a></li>
+            <li><a href="#calculator">ROI Calculator</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main);">Platforms</h4>
+          <ul class="footer-links">
+            <li><a href="#platforms">Adobe Stock</a></li>
+            <li><a href="#platforms">Shutterstock</a></li>
+            <li><a href="#platforms">Freepik</a></li>
+            <li><a href="#platforms">Vecteezy</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="font-size: 0.95rem; margin-bottom: 1rem; color: var(--text-main);">Resources &amp; Links</h4>
+          <ul class="footer-links">
+            <li><a href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" target="_blank" rel="noopener">Chrome Web Store</a></li>
+            <li><a href="https://github.com/NiL4gh" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-color); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: var(--text-dim);">
+        <div>© 2026 ReadyTag. Built for Stock Photo &amp; Vector Contributors.</div>
+        <div style="display: flex; gap: 1.5rem;">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="#security">Terms of Use</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 14. JavaScript Execution Scripts -->
+  <script src="js/keyword-canvas.js"></script>
+  <script src="js/extension-mockup.js"></script>
+  <script src="js/roi-calculator.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

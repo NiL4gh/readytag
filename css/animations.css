@@ -1,0 +1,156 @@
+/* ReadyTag Site - Keyframe Animations & Animation Helper Classes */
+
+/* ==========================================================================
+   1. Keyframe Definitions
+   ========================================================================== */
+
+/* Scanning laser effect for image analysis & extension preview */
+@keyframes scanningLaser {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* Pulsing ambient glow for badges, spotlights, and indicators */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2), 0 0 20px rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.5), 0 0 40px rgba(6, 182, 212, 0.3);
+    border-color: rgba(99, 102, 241, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2), 0 0 20px rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.3);
+  }
+}
+
+/* Button shimmer animation across primary action buttons */
+@keyframes buttonShimmer {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(300%) rotate(25deg);
+  }
+}
+
+/* Subtle floating badge & keyword pill animation */
+@keyframes floatBadge {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Chart line stroke drawing SVG animation */
+@keyframes strokeDraw {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Additional continuous spin animation */
+@keyframes spinSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fade in up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   2. Animation Helper Classes
+   ========================================================================== */
+
+/* Laser beam scanner line */
+.laser-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-indigo), transparent);
+  box-shadow: 0 0 12px var(--accent-cyan), 0 0 20px var(--accent-indigo);
+  animation: scanningLaser 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Pulsing glow ring container */
+.pulse-ring {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Shimmer overlay effect for CTAs */
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: buttonShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Floating tag / pill element */
+.floating-tag {
+  animation: floatBadge 3s ease-in-out infinite;
+}
+
+/* Chart stroke draw helper */
+.animated-stroke {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: strokeDraw 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Entrance animation class */
+.fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
