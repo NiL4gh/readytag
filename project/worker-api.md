@@ -2,7 +2,8 @@
 
 Worker URL: `https://readytagworker.l-lawliet-620.workers.dev`  
 Source: `readytag-worker/src/index.js` (auto-deploys from `NiL4gh/readytag-worker` main)  
-CORS: Allows `chrome-extension://` and `moz-extension://` origins only.
+CORS: Allows `chrome-extension://` and `moz-extension://` origins only.  
+Mistral text model: `mistral-medium-latest` (Medium 3.5) since Aug 2026; vision is `pixtral-12b-2409`.
 
 For the full prompt system, processing pipeline, and vision logic — see `readytag-worker/CLAUDE.md`.
 
@@ -112,16 +113,24 @@ The Worker fetches the image, converts to base64, calls the vision model with `D
 **Vision support by provider:**
 | Provider | Vision model |
 |---------|-------------|
-| groq | `meta-llama/llama-4-scout-17b-16e-instruct` |
-| openai | `gpt-4o` |
-| anthropic | `claude-sonnet-4-6` |
+| groq | ❌ throws: Groq decommissioned its free vision models (llama-3.2-90b-vision, qwen3-vl) — error directs user to switch provider |
+| openai | `gpt-4o` (detail: low) |
+| anthropic | `claude-3-5-sonnet-latest` |
 | gemini-pro | `gemini-2.5-flash` |
 | nvidia | `meta/llama-3.2-90b-vision-instruct` |
-| openrouter | `meta-llama/llama-3.2-90b-vision-instruct:free` |
-| zhipuai | `glm-4v-flash` |
+| openrouter | `nvidia/nemotron-nano-12b-v2-vl:free` |
+| zhipuai | `glm-4.6v-flash` |
 | xai | `grok-2-vision-1212` |
 | mistral | `pixtral-12b-2409` |
 | deepseek | ❌ throws: "DeepSeek does not support Image Mode" |
+
+---
+
+## GET /affiliates
+
+Serves the current partner/affiliate offer list consumed by the extension's sticky partner banner (`background.js:handleFetchAffiliates` → 12h cache in `chrome.storage.local` under `remoteAffiliateOffers`/`remoteAffiliateSyncTime`; remote list overrides the hardcoded `AFFILIATE_CONFIG.offers` in `state.js`).
+
+Offer objects: `{ id, title, desc, url, cta, badge, targeting: { platforms, categories }, weight, cooldownHours }`. Edit the array in `readytag-worker/src/index.js` to rotate offers without a CWS release.
 
 ---
 

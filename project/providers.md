@@ -6,16 +6,16 @@
 
 | Key | Display name | Text model | Vision model | API base | Storage key | Free |
 |-----|-------------|-----------|-------------|---------|-------------|------|
-| `groq` | Groq — Llama 3.3 70B | `llama-3.3-70b-versatile` | `meta-llama/llama-4-scout-17b-16e-instruct` | `https://api.groq.com/openai/v1` | `groqKey` | Yes (default) |
+| `groq` | Groq — Llama 3.3 70B | `llama-3.3-70b-versatile` | ❌ throws error (Groq decommissioned free vision models) | `https://api.groq.com/openai/v1` | `groqKey` | Yes (default) |
 | `openai` | OpenAI — GPT-4o | `gpt-4o` | `gpt-4o` | `https://api.openai.com/v1` | `openaiKey` | Paid |
-| `anthropic` | Anthropic — Claude Sonnet | `claude-sonnet-4-6` | `claude-sonnet-4-6` | `https://api.anthropic.com/v1/messages` | `anthropicKey` | Paid |
+| `anthropic` | Anthropic — Claude 3.5 Sonnet | `claude-3-5-sonnet-latest` | `claude-3-5-sonnet-latest` | `https://api.anthropic.com/v1/messages` | `anthropicKey` | Paid |
 | `gemini-pro` | Google — Gemini 2.5 Flash | `gemini-2.5-flash` | `gemini-2.5-flash` | `https://generativelanguage.googleapis.com/v1beta` | `geminiKey` | Yes |
-| `deepseek` | DeepSeek — V3 | `deepseek-chat` | ❌ throws error | `https://api.deepseek.com/v1` | `deepseekKey` | Yes |
-| `mistral` | Mistral — Large | `mistral-large-latest` | `pixtral-12b-2409` | `https://api.mistral.ai/v1` | `mistralKey` | Yes |
+| `deepseek` | DeepSeek — V3 | `deepseek-chat` | ❌ throws error | `https://api.deepseek.com/v1` | `deepseekKey` | Paid |
+| `mistral` | Mistral — Medium 3.5 | `mistral-medium-latest` | `pixtral-12b-2409` | `https://api.mistral.ai/v1` | `mistralKey` | Yes (free tier verified: Medium 3.5 callable on no-billing keys; tested with real free-tier key on 2026-08-17) |
 | `xai` | xAI — Grok 3 | `grok-3` | `grok-2-vision-1212` | `https://api.x.ai/v1` | `xaiKey` | Paid |
-| `nvidia` | Nvidia NIM — Llama 405B | `meta/llama-3.1-405b-instruct` | `meta/llama-3.2-90b-vision-instruct` | `https://integrate.api.nvidia.com/v1` | `nvidiaKey` | Yes |
-| `openrouter` | OpenRouter — Gemini Flash (free) | `google/gemini-2.0-flash-exp:free` | `meta-llama/llama-3.2-90b-vision-instruct:free` | `https://openrouter.ai/api/v1` | `openrouterKey` | Yes |
-| `zhipuai` | ZhipuAI — GLM-4 Flash | `glm-4-flash` | `glm-4v-flash` | `https://open.bigmodel.cn/api/paas/v4` | `zhipuaiKey` | Yes |
+| `nvidia` | Nvidia NIM — Nemotron 3 Nano Omni | `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning` | `meta/llama-3.2-90b-vision-instruct` | `https://integrate.api.nvidia.com/v1` | `nvidiaKey` | Yes |
+| `openrouter` | OpenRouter — Auto Free | `openrouter/free` | `nvidia/nemotron-nano-12b-v2-vl:free` | `https://openrouter.ai/api/v1` | `openrouterKey` | Yes |
+| `zhipuai` | ZhipuAI — GLM-4.7 Flash | `glm-4.7-flash` | `glm-4.6v-flash` | `https://open.bigmodel.cn/api/paas/v4` | `zhipuaiKey` | Yes |
 
 ---
 
@@ -25,7 +25,7 @@
 - Default provider. Returns rate limit headers: `x-ratelimit-remaining-requests`, `x-ratelimit-reset-requests`
 - Worker's `parseGroqRate()` extracts these and returns them as `groqRate` in the response
 - Extension shows remaining request count in the panel footer
-- Vision model is different from text model
+- **Vision is DEAD** — Groq decommissioned its free vision models (llama-3.2-90b-vision, qwen3-vl) in 2026; `callGroqVision()` throws a user-visible error directing users to Gemini/Mistral/xAI/OpenRouter/Anthropic for Image Describe
 
 **Anthropic**
 - Uses `x-api-key: <key>` header instead of `Authorization: Bearer <key>`
@@ -49,12 +49,18 @@
 - Requires extra headers: `HTTP-Referer: https://nil4gh.github.io/readytag`, `X-Title: ReadyTag`
 - Returns text-only (no `json_object` mode on free model) — model must output JSON naturally
 
+**Mistral**
+- Text model switched from Small → Medium 3.5 (`mistral-medium-latest`) in Aug 2026 — Small produced mediocre metadata; Medium is frontier-class and still cheap enough for BYOK users ($1.5/$7.5 per M tokens vs $0.15/$0.6 for Small)
+- Free-tier verified 2026-08-17: a no-billing-account key successfully called Medium 3.5 with `json_object` mode (200 OK, valid JSON)
+- Vision uses separate model `pixtral-12b-2409`
+- `-latest` aliases auto-track the newest GA version — if a future Medium 4 releases, behavior/pricing may shift silently; pin `mistral-medium-3-5` if stability matters more than freshness
+
 **ZhipuAI**
-- Vision model (`glm-4v-flash`) is different from text model (`glm-4-flash`)
+- Vision model (`glm-4.6v-flash`) is different from text model (`glm-4.7-flash`)
 - OpenAI-compatible endpoint
 
 **Nvidia NIM**
-- Both text and vision use OpenAI-compatible format
+- Text: `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning`; vision: `meta/llama-3.2-90b-vision-instruct`
 - Free tier available at `build.nvidia.com`
 
 ---
