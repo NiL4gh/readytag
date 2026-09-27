@@ -40,62 +40,6 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/animations.css">
 
-  <style>
-    .blog-content p {
-      margin-bottom: 1.5rem;
-      font-size: 1.1rem;
-      color: #cbd5e1;
-    }
-    .blog-content h2 {
-      margin: 3rem 0 1rem;
-      font-size: 1.75rem;
-    }
-    .blog-content h3 {
-      margin: 2rem 0 1rem;
-      font-size: 1.3rem;
-    }
-    .blog-content ul {
-      margin-bottom: 1.5rem;
-      padding-left: 1.5rem;
-      color: #cbd5e1;
-      font-size: 1.1rem;
-      line-height: 1.7;
-    }
-    .blog-content ol {
-      margin-bottom: 1.5rem;
-      padding-left: 1.5rem;
-      color: #cbd5e1;
-      font-size: 1.1rem;
-      line-height: 1.7;
-    }
-    .blog-content li {
-      margin-bottom: 0.5rem;
-    }
-    .blog-header {
-      text-align: center;
-      max-width: 800px;
-      margin: 0 auto 3rem;
-    }
-    .related-posts {
-      margin-top: 3rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-    .related-posts a {
-      display: block;
-      background: rgba(99, 102, 241, 0.08);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 1.5rem;
-      text-decoration: none;
-      transition: border-color 0.3s ease;
-    }
-    .related-posts a:hover {
-      border-color: var(--border-highlight);
-    }
-  </style>
-
   <!-- Schema.org Entity Graph JSON-LD -->
   <script type="application/ld+json">
   {
@@ -223,6 +167,8 @@
               <li><a href="../resources/#competitors">Comparison</a></li>
             </ul>
           </li>
+
+          <li><a href="./" style="color: var(--text-main); font-weight: 600;">Blog</a></li>
         </ul>
       </div>
 
@@ -233,17 +179,34 @@
   </nav>
 
   <main id="swup" class="transition-fade">
-  <article style="padding: 6rem 0;">
-    <div class="container animate-on-scroll">
-      <div class="blog-header">
-        <span class="nav-badge" style="margin-bottom: 1rem;">Platform Deep Dive</span>
-        <h1 style="margin-bottom: 1.5rem;">Adobe Stock Keywording in 2026: The Complete Guide to Keywords That Get Found</h1>
-        <div style="color: var(--text-dim); font-size: 0.95rem;">
-          Published on August 3, 2026 • 7 min read
-        </div>
-      </div>
+  <article class="editorial-article">
+    <div class="editorial-container animate-on-scroll">
+      
+      <!-- Breadcrumbs -->
+      <nav class="editorial-breadcrumbs" aria-label="Breadcrumb">
+        <a href="../">Home</a>
+        <span class="sep">/</span>
+        <a href="./">Blog</a>
+        <span class="sep">/</span>
+        <span class="current">Adobe Stock Keywording with AI</span>
+      </nav>
 
-      <div class="blog-content" style="max-width: 750px; margin: 0 auto; background: var(--bg-surface-1); padding: 3rem; border: 1px solid var(--border-color); border-radius: var(--radius-lg);">
+      <!-- Editorial Header -->
+      <header class="editorial-header">
+        <span class="editorial-category">Platform Guide</span>
+        <h1 class="editorial-title">Adobe Stock Keywording in 2026: The Complete Guide to Keywords That Get Found</h1>
+        <div class="editorial-meta">
+          <div class="editorial-meta-item">
+            <span class="editorial-author-avatar">NP</span>
+            <span style="color: var(--text-main); font-weight: 500;">Niloy Pal</span>
+          </div>
+          <span class="editorial-meta-item">August 3, 2026</span>
+          <span class="editorial-meta-item">7 min read</span>
+        </div>
+      </header>
+
+      <!-- Editorial Prose Body -->
+      <div class="editorial-prose">
         <p>If you contribute to Adobe Stock, your metadata is your storefront. Buyers search for keywords, not images — Adobe's engine matches typed queries against your title and keyword list, and assets with weak metadata simply never show up. A stunning photo with sloppy Adobe Stock keywording is invisible to the people who would buy it.</p>
         <p>This guide covers how Adobe Stock search actually works in 2026, the exact rules Adobe enforces on titles and keywords, the two mistakes that quietly kill contributor rankings, and how AI generates compliant, ranking-ready metadata in seconds.</p>
 
@@ -298,23 +261,28 @@
         <h2>Professional Keywording Costs $0</h2>
         <p>The best part: you don't need a $30/month subscription to access this technology. ReadyTag is a "Bring Your Own Key" (BYOK) tool — it plugs directly into the APIs of major AI providers using keys you already own or can get free. Platforms like Groq offer generous free tiers, which means you can keyword thousands of Adobe Stock images a month for absolutely zero cost.</p>
 
-        <div style="margin-top: 3rem; padding: 2rem; background: rgba(255, 77, 77, 0.1); border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-highlight);">
-          <h3 style="margin-top: 0;">Automate your Adobe Stock Portfolio</h3>
-          <p style="margin-bottom: 1.5rem; color: var(--text-main);">Install ReadyTag for free and let AI handle your metadata.</p>
-          <a href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" class="btn-primary" target="_blank" rel="noopener">Add to Chrome</a>
+        <!-- In-Article CTA Box -->
+        <div class="editorial-cta-box">
+          <h3>Automate Your Adobe Stock Portfolio</h3>
+          <p>Install ReadyTag for free and let AI generate accurate, high-ranking metadata right inside your portal.</p>
+          <a href="https://chromewebstore.google.com/detail/metarefresh-meta-refresh/achfpjlldepcapcecadonijoahbdpdfm" class="btn-primary shimmer-effect" target="_blank" rel="noopener">Add ReadyTag to Chrome — Free</a>
         </div>
 
-        <div class="related-posts">
-          <a href="mastering-shutterstock-keywording-with-ai.html">
-            <div style="font-size: 0.75rem; font-weight: 600; color: var(--accent-indigo); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Related Guide</div>
-            <h3 style="margin: 0 0 0.5rem; color: var(--text-main); font-size: 1.1rem;">Mastering Shutterstock Keywording with AI</h3>
-            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">The same metadata discipline, applied to Shutterstock's search engine.</p>
-          </a>
-          <a href="maximizing-stock-earnings-with-ai.html">
-            <div style="font-size: 0.75rem; font-weight: 600; color: var(--accent-indigo); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Related Guide</div>
-            <h3 style="margin: 0 0 0.5rem; color: var(--text-main); font-size: 1.1rem;">How Vision AI Metadata is Changing Stock Photography Earnings</h3>
-            <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Why manual keywording is dying across every stock platform.</p>
-          </a>
+        <!-- Related Reading -->
+        <div class="editorial-related">
+          <div class="editorial-related-title">Related Reading</div>
+          <div class="editorial-related-grid">
+            <a href="adobe-stock-dynamic-upload-limits-guide-2026.html" class="editorial-related-card">
+              <span class="blog-card-badge" style="margin-bottom: 0.5rem; align-self: flex-start;">2026 Policy Guide</span>
+              <h3 style="margin: 0 0 0.5rem; font-size: 1.05rem; color: var(--text-main);">Adobe Stock Dynamic Upload Limits in 2026</h3>
+              <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Why metadata quality dictates your weekly quota and how to keep limits at 500+.</p>
+            </a>
+            <a href="mastering-shutterstock-keywording-with-ai.html" class="editorial-related-card">
+              <span class="blog-card-badge" style="margin-bottom: 0.5rem; align-self: flex-start;">Platform Guide</span>
+              <h3 style="margin: 0 0 0.5rem; font-size: 1.05rem; color: var(--text-main);">Mastering Shutterstock Keywording with AI</h3>
+              <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">The same metadata discipline, applied to Shutterstock's search engine.</p>
+            </a>
+          </div>
         </div>
       </div>
     </div>
